@@ -20,6 +20,11 @@ int main() {
   } else {
     val = atoi(card_name);
   }
-  printf("カードの値: %i\n", val);
+  // 値が 3 から 6 かどうかを調べる
+  if ((val > 2) && (val < 7))
+    puts("カウントが増えます");
+  // それ以外の場合には、カードが 10,J,Q,K かどうか調べる
+  else if (val == 10)
+    puts("カウントが減ります");
   return 0;
 }
