@@ -72,6 +72,7 @@ int main() {
         /* この質問を新しい質問に置き換える */
         printf("%sには当てはまり、%sには当てはまらない質問は？", suspect, current->question);
         fgets(question, 80, stdin);
+        free(current->question);
         current->question = strdup(question);
 
         break;
