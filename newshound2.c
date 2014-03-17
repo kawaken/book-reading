@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 void error(char *msg) {
   fprintf(stderr, "%s:%s\n", msg, strerror(errno));
@@ -29,6 +30,11 @@ int main(int argc, char *argv[]) {
       error("スクリプトを実行できません");
       return 1;
     }
+  }
+
+  int pid_status;
+  if (waitpid(pid, &pid_status, 0) == -1) {
+    error("子プロセスの待機エラー");
   }
 
   return 0;
