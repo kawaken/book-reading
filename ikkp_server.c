@@ -99,22 +99,28 @@ int main(int argc, char *argv[]) {
     if (connect_d == -1) {
       error("第2 のソケットを開けません");
     }
-    if (say(connect_d, "インターネットノックノックプロトコルサーバ\r\nバージョン1.0\r\nKnock! Knock!\r\n> ") != -1) {
-      read_in(connect_d, buf, sizeof(buf));
 
-      if (strncasecmp("Who's there?", buf, 12)) {
-        say(connect_d, "「Who's there?」と入力しなければいけません！ ");
-      } else {
-        if (say(connect_d, "Oscar\r\n> ") != -1) {
-          read_in(connect_d, buf, sizeof(buf));
+    if (!fork()) {
+      close(listener_d);
+      if (say(connect_d, "インターネットノックノックプロトコルサーバ\r\nバージョン1.0\r\nKnock! Knock!\r\n> ") != -1) {
+        read_in(connect_d, buf, sizeof(buf));
 
-          if (strncasecmp("Oscar who?", buf, 10)) {
-            say(connect_d, "「Oscar who?」と入力しなければいけません！ \r\n");
-          } else {
-            say(connect_d, "Oscar silly question, you get a silly answer\r\n");
+        if (strncasecmp("Who's there?", buf, 12)) {
+          say(connect_d, "「Who's there?」と入力しなければいけません！ ");
+        } else {
+          if (say(connect_d, "Oscar\r\n> ") != -1) {
+            read_in(connect_d, buf, sizeof(buf));
+
+            if (strncasecmp("Oscar who?", buf, 10)) {
+              say(connect_d, "「Oscar who?」と入力しなければいけません！ \r\n");
+            } else {
+              say(connect_d, "Oscar silly question, you get a silly answer\r\n");
+            }
           }
         }
       }
+      close(connect_d);
+      exit(0);
     }
     close(connect_d);
   }
