@@ -1,0 +1,17 @@
+Metadata-Version: 1.1
+Name: distsample.todolist
+Version: 0.1
+Summary: a todo list
+Home-page: https://github.com/kawaken/book-reading
+Author: Kentaro Kawano
+Author-email: kentaro.kawano@example.com
+License: UNKNOWN
+Description: 使い方
+        -------------------------
+        
+        TODO list
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programing Language :: Python :: 3
+Classifier: Programing Language :: Python :: 3,4

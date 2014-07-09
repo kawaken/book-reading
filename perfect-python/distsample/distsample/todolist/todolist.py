@@ -4,6 +4,7 @@ import pickle
 import sys
 import shelve
 import argparse
+from datetime import datetime
 
 def create_task(name, due_date, required_time):
     return dict(name=name, due_date=due_date, required_time=required_time, finished=False)
@@ -25,7 +26,7 @@ def load_tasks(file):
 def next_task_name(db):
     id = db.get('next_id', 0)
     db['next_id'] = id + 1
-    return "task:{0}".formant(id)
+    return "task:{0}".format(id)
 
 def add_task(db, task):
     key = next_task_name(db)
@@ -38,6 +39,28 @@ def all_task(db):
 
 def unfinished_tasks(db):
     return ((key, task) for key, task in all_task(db) if not task['finished'])
+
+def cmd_add(args):
+    name = input('task name: ')
+    due_date = datetime.strptime(input('due date [Y-m-d]: '), '%Y-%m-%d')
+    required_time = int(input('required_time: '))
+
+    task = create_task(name, due_date, required_time)
+    add_task(args.db, task)
+
+def cmd_list(args):
+    if args.all:
+        tasks = all_task(args.db)
+    else:
+        tasks = unfinished_tasks(args.db)
+
+    for key, task in tasks:
+        print("{0} {1}".format(key, format_task(task)))
+
+def cmd_finish(args):
+    task = args.db[args.task]
+    finish_task(task)
+    args.db[args.task] = task
 
 def main():
     parser = argparse.ArgumentParser()
